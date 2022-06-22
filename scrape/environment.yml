@@ -1,0 +1,23 @@
+name: 10botics
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - python
+  - python-dateutil
+  - jupyter
+  - numpy
+  - pandas
+  - matplotlib
+  - pip:
+    - requests
+    - selenium
+    - webdriver-manager
+    - tensorflow
+    - Pillow
+    - scikit-learn
+    - seaborn
+    - plotly
+    - lxml
+    - html5lib
+    - bs4
