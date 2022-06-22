@@ -1,7 +1,7 @@
 # LICENSE
 
-> code copyright Copyright (c) 2022 wcyat. MIT License.
-> data copyright origional authors
+> code written by me copyright Copyright (c) 2022 wcyat. MIT License.
+> data, and other code not written by me copyright origional authors
 
 ## MIT License
 
