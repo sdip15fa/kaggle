@@ -1,5 +1,5 @@
 /.lh/
 /.idea/
-/venv/
 /.vscode/
 .fake
+/venv/
