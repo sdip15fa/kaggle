@@ -1,4 +1,4 @@
-PassengerId,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked,boat, body, home.dest,Survived
+PassengerId,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked,boat,body,home.dest,Survived
 1216,3,"Smyth, Miss. Julia",female,,0,0,335432,7.7333,,Q,13,,,1
 699,3,"Cacic, Mr. Luka",male,38.0,0,0,315089,8.6625,,S,,,Croatia,0
 1267,3,"Van Impe, Mrs. Jean Baptiste (Rosalie Paula Govaert)",female,30.0,1,1,345773,24.15,,S,,,,0
