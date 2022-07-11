@@ -1,0 +1,10 @@
+ARG 0: /home/wcyat/dev/kaggle/code/ml-jump/Linux/SimpleMLJump2.x86_64
+ARG 1: --apiPort
+apiPort56905
+ARG 2: 56905
+ARG 3: --gamePort
+gamePort42747
+ARG 4: 42747
+ARG 5: --small
+smallfalse
+ARG 6: false
