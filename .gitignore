@@ -3,3 +3,5 @@
 /.vscode/
 .fake
 /venv/
+LOGS/
+__pycache__/
