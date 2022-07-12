@@ -7,7 +7,7 @@
 # - Data Cleaning / Feature Engineering / Modeling 
 # - Deployment
 
-# In[1845]:
+# In[1]:
 
 
 # Import Libraries
@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 import multiprocessing as mp
 
 
-# In[1846]:
+# In[2]:
 
 
 # Read CSV File
@@ -32,76 +32,73 @@ df = pd.read_csv("./data.csv")
 df
 
 
-# In[1847]:
+# In[3]:
 
 
 # What do each of the columns mean?
 
 
-# In[1848]:
+# In[4]:
 
 
 jump = df[df['Jump'] == True]
-dead = jump['Dead'].to_numpy()
+dead = jump['Dead']
 # dead.value_counts()
 for i in range(dead.shape[0]):
     # print(jump.index[i])
     try:
-        if any(df['Dead'][jump.index[i] + x] for x in range(0, 11)):
+        if any(any(df['Dead'][jump.index[i + y] + x] for x in range(0, 11)) for y in range(0, 2)) or not any(df['Scored'][jump.index[i] + x] for x in range(0, 5)):
             df.drop(df[df.index == jump.index[i]].index, inplace=True)
     except:
         pass
 df
 
 
-# In[1849]:
+# In[5]:
 
 
-dead = df['Dead'].to_numpy()
 # dead.value_counts()
 for i in range(df.shape[0]):
     # print(jump.index[i])
     try:
         if any(df['Dead'][df.index[i] + x] for x in range(0, 6)):
-            print(df.index[i] + 5)
             df.drop(df[df.index == df.index[i]].index, inplace=True)
     except:
         pass
 df
 
 
-# In[1850]:
+# In[6]:
 
 
 # Are there data we don't care about?
 df.drop(df[df['Dead'] == True].index, inplace=True)
-df.drop(df[df['Grounded'] == False].index, inplace=True)
-df = df.drop(["Grounded", "Dead", "Scored"], inplace=False, axis=1)
+df = df.drop(["Dead", "Scored"], inplace=False, axis=1)
 df
 
 
-# In[1851]:
+# In[7]:
 
 
 jumpCount = df[df['Jump'] == True].shape[0]
 jumpCount
 
 
-# In[1852]:
+# In[8]:
 
 
 noJumpCount = df[df['Jump'] == False].shape[0]
 noJumpCount
 
 
-# In[1853]:
+# In[9]:
 
 
 df_toDrop = df[df['Jump'] == False].sample(noJumpCount - jumpCount)
 df.drop(df_toDrop.index, inplace=True)
 
 
-# In[1854]:
+# In[10]:
 
 
 # Create the Input DataFrame
@@ -109,7 +106,7 @@ X = df[['Bar 1 Distance', 'Bar 1 Speed', 'Bar 2 Distance', 'Bar 2 Speed']]
 X = X.to_numpy()
 
 
-# In[1855]:
+# In[11]:
 
 
 # Create the Output DataFrame and Map True / False to 1 / 0
@@ -127,7 +124,7 @@ Y['Jump'] = Y.apply(bool2Num, axis='columns')
 Y = Y['Jump'].to_numpy()
 
 
-# In[1856]:
+# In[12]:
 
 
 # Train Test Split with test size set to 20%
@@ -136,7 +133,7 @@ from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
 
-# In[1857]:
+# In[13]:
 
 
 from sklearn.linear_model import LogisticRegression
@@ -146,26 +143,26 @@ model = RandomForestClassifier()
 model.fit(x_train, y_train)
 
 
-# In[1858]:
+# In[14]:
 
 
 predict = model.predict(x_test)
 
 
-# In[1859]:
+# In[15]:
 
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 
-# In[1860]:
+# In[16]:
 
 
 # Print Out Prediction Accuraccy
 accuracy_score(y_test, predict)
 
 
-# In[1861]:
+# In[17]:
 
 
 # Try a Different Model (Random Forest)
@@ -178,7 +175,7 @@ accuracy_score(_________________, ________________)"""
 
 # # Deployment
 
-# In[1862]:
+# In[18]:
 
 
 # Command to Open SIMPLE ML Jump 2 (for Example)
@@ -192,7 +189,7 @@ accuracy_score(_________________, ________________)"""
 env_path = "/home/wcyat/dev/kaggle/code/ml-jump/Linux/SimpleMLJump2.x86_64"
 
 
-# In[1863]:
+# In[19]:
 
 
 # Import Libraries
@@ -276,11 +273,11 @@ def extractData(data):
 UDPServerSocket.sendto(bytes.fromhex('07 00'), (localIP, gamePort))
 
 
-# In[1864]:
+# In[ ]:
 
 
 df2 = pd.DataFrame()
-
+prevJump = False
 # Process Loop - Retrieve Data from Simulation, Run Through Model, Output Command
 while True:
     try:
@@ -296,22 +293,27 @@ while True:
         predict = model.predict(X)
         print(predict, end='\r')
     # If Jump Decision is Made, Send to Game
-        if predict[0] > 0.5:
+        if predict[0] > 0.5: # and not (not df_temp.iloc[0, 5] and (df_temp.iloc[0, 2] - df_temp.iloc[0, 0]) >= 15):
             # Jump Command
-            UDPServerSocket.sendto(bytes.fromhex(
-                '06 01'), (localIP, gamePort))
-        if df_temp.iloc[:, 6][0]:
-            UDPServerSocket.sendto(bytes.fromhex(
-                '07 00'), (localIP, gamePort))
+            if not prevJump:
+                UDPServerSocket.sendto(bytes.fromhex(
+                    '06 01'), (localIP, gamePort))
+                prevJump = True
+            else:
+                prevJump = False
+        else:
+            prevJump = False
+        if df_temp.iloc[0, 6]:
             df2.columns = ['Bar 1 Distance', 'Bar 1 Speed', 'Bar 2 Distance',
                            'Bar 2 Speed', 'Jump', 'Grounded', 'Dead', 'Scored']
             try:
                 pd.concat([pd.read_csv("data.csv"),
                            df2]).to_csv("data.csv", index=False)
             except:
-                df2.to_csv("data.csv", index=False)
+                pass
 
             df2 = pd.DataFrame()
+            UDPServerSocket.sendto(bytes.fromhex('07 00'), (localIP, gamePort))
 
         df2 = pd.concat([df2, df_temp])
     except Exception as e:
@@ -319,7 +321,7 @@ while True:
         break
 
 
-# In[1865]:
+# In[ ]:
 
 
 # Export Data to CSV
@@ -332,7 +334,7 @@ except:
     df2.to_csv("data.csv", index=False)
 
 
-# In[1866]:
+# In[ ]:
 
 
 # Close UDP Port When Game is Closed
