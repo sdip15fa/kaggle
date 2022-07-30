@@ -33,6 +33,7 @@ grpcio==1.47.0
 h11==0.13.0
 h5py==3.7.0
 idna==3.3
+intel_tensorflow==2.9.1
 ipykernel==6.13.1
 ipython==8.4.0
 ipython-genutils==0.2.0

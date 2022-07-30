@@ -1,0 +1,3 @@
+[submodule "learntools"]
+	path = learntools
+	url = https://github.com/Kaggle/learntools
