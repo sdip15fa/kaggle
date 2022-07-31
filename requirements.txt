@@ -51,7 +51,7 @@ jupyterlab-widgets==1.1.1
 keras==2.9.0
 Keras-Preprocessing==1.1.2
 kiwisolver==1.4.3
-learntools @ https://github.com/Kaggle/learntools/archive/refs/heads/master.zip
+learntools @ https://github.com/Kaggle/learntools/archive/refs/heads/master.tar.gz
 libclang==14.0.1
 lightgbm==3.3.2
 Markdown==3.3.7
