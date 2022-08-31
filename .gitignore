@@ -3,6 +3,8 @@
 /.vscode/
 .fake
 /venv/
+/mlagents/
+/gym/
 LOGS/
 __pycache__/
 /dota/input/
