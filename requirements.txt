@@ -35,7 +35,7 @@ h5py==3.7.0
 idna==3.3
 intel_tensorflow==2.9.1
 ipykernel==6.13.1
-ipython==8.4.0
+ipython==8.10.0
 ipython-genutils==0.2.0
 ipywidgets==7.7.1
 jedi==0.18.1
